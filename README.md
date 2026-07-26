@@ -33,7 +33,7 @@ Buttons (10):
 | 2 | B button | `h` |
 | 3 | X button | `f` |
 | 4 | Y button | `t` |
-| 5 | Left Bumper | `e` |
+| 5 | Left Bumper | `e` | run spindexer (hold) |
 | 6 | Right Bumper | `u` |
 | 7 | Back button | `v` |
 | 8 | Start button | `b` |
