@@ -16,6 +16,7 @@ WPILib is the software suite containing all necessary packages and applications 
     - [View](#view)
     - [Extension Installation](#extension-installation)
         - [Disabling Unnecessary Extensions](#disabling-unnecessary-extensions)
+        - [Live Share](#live-share)
 - [Optional Java Recap](#optional-java-recap)
 - [Programming the Codebase](#programming-the-codebase)
     - [Expectations](#expectations)
@@ -150,6 +151,16 @@ Disable the following extensions:
 - `Project Manager for Java`
 - Any other extensions with a high startup time that you have determined to be not useful (ask mentors)
 
+#### Live Share
+To allow mentors to view your coding in real time, install the `Live Share` extension (by the verified `Microsoft`).
+
+On the left bar, click on the live share icon and share a `Read/Write` link with the mentor.
+
+Mentors:
+- When opening a link, it will replace the last used VS Code window. So if you have existing windows to keep, create a new blank window with `Ctrl`/`Command`+`Shift`+`N`.
+- In the shared workspace, click on the Live Share icon on the left and then click on the trainee's name to follower their pointer.
+- Works best with 1-2 trainees. When mentoring, use split screen, second monitor, or skillful window switching to monitor both trainees.
+
 ## Optional Java Recap
 <details><summary>Optional review</summary>
 
@@ -280,6 +291,20 @@ This is a mentorship, not a classroom.
 However, please note that mentors will not directly write out code for you unless necessary, because copying code does not induce learning. \
 Please also refrain from copy-pasting previous code; you can type it out quickly with the help of autocomplete and IDE features, which reinforces the syntax.
 
+Mentors:
+- You must monitor how the trainees are doing and provide verbal corrections if something is off (unless it is a repeating/frequent error)
+- You also need to provide suggestions on how to edit code more efficiently, e.g. the following shortcuts:
+    - `Ctrl`+`C` or `Ctrl`+`X` on a whole line without highlighting anything
+    - `Alt`+`Down`/`Up` to move lines
+    - `Ctrl`+`Left`/`Right` to move quickly, and `Ctrl`+`Backspace`
+    - `F2` or `fn`+`F2` to rename symbols
+    - `Ctrl`+`A` to select all code
+    - `Ctrl`+`D` to highlight multiple occurrences
+    - `Ctrl`+`K` `S` to save all files at once
+    - `Ctrl`+`Tab` to switch back to recent tabs
+    - `Ctrl`+`/` to toggle line comment
+    - Save code frequently, to automatically format instead of manually
+
 ### Spindexer Subsystem
 To start, we'll implement the robot's spindexer from scratch.
 
@@ -302,7 +327,7 @@ Luckily, because of some JSON settings I put inside this repository, you can jus
 Let's add a field in `SpindexerSubsystem` for controlling the single motor. \
 The motor controller class is called `TalonFX` (for Kraken motors).
 
-Declaration a private and final `TalonFX` field named `motor`.
+Declare a private and final `TalonFX` field named `motor`.
 
 The `motor` name has a warning because it is not used. Define a default value for the field, setting it to a new `TalonFX` *instance*.
 
@@ -341,7 +366,7 @@ The spindexer motor actually does not require any more configuration because it 
 
 You have now created and initialized a motor configuration object but have not yet applied it to the actual motor. Write a constructor for `SpindexerSubsystem` that takes no arguments.
 
-To apply the motor configuration in `SpindexerConfig` to `motor`, use the `apply()` method of the object returned by the `getConfigurator()` method of the motor object. Pass in the motor config as the argument to the `apply` method.
+To apply the motor configuration in `SpindexerConfig` to `motor`, call `getConfigurator()` on the `motor` followed by calling the `apply()` method on its return value. Pass in the motor config as the argument to the `apply` method.
 
 > Note: whenever a motor configuration is applied, by code or elsewhere, the motor chirps a short melody. This is useful to tell when the code on the robot is all initialized and ready.
 
@@ -407,13 +432,14 @@ A sendable is something we can *send* over NetworkTables (an FRC communication p
 Here, our sendable is the `SpindexerSubsystem`, and the property we want to log is the motor speed.
 
 To log it, we need to override a method in `SpindexerSubsystem`. \
-On a new line in the class body, type in `initSendable` and autocomplete with the suggestion.
+On a new line in the class body, type in `initSendable` without modifiers, and autocomplete with the suggestion. \
+(If no suggestion shows, be sure that your `SpindexerSubsystem` extends from `SubsystemBase`.)
 
 Replace the code inside with a call to the `builder`'s `addDoubleProperty()` method. The `SendableBuilder` is used to build the sendable's properties.
 
 Autocompleting it fills it with 3 arbitrary arguments that we need to replace. Hover over `addDoubleProperty` to see documentation.
 
-We see that the first parameter is a string for the property name; a label. Let's use `"motor speed (frac)"` for this (don't forget the quotes to make it a string).
+We see that the first parameter is a string for the property name; a label. Let's use `"motor speed (frac)"` for this (don't forget the quotes to make it a string). The label should be lowercase.
 
 > Note: Document the units of numerical properties in its label, e.g. rotations, degrees, fraction, meters.
 
@@ -425,7 +451,7 @@ Use a method reference to our new `getMotorSpeed` method.
 
 The last parameter is the setter, which allows a user to change the value on the dashboard, invoking the setter. Passing in `null` means no setter.
 
-However, our `moveMotorSpeed()` is the perfect setter method for this. Use a method reference to `moveMotorSpeed` for the setter argument.
+However, our `moveMotorSpeed()` is the perfect setter method for this. It already takes a `double` like the setter should. Use a method reference to `moveMotorSpeed` for the setter argument.
 
 > Tip: You can add forward slashes `/` to the property key to use or create dropdowns and hierarchies inside the dashboard table.
 
@@ -506,23 +532,18 @@ Then, move `SpindexerSubsystem.java` inside of the new folder. The IDE will ask 
 
 Then, create two files in the folder: `SpindexerConfig.java`, and `SpindexerConst.java`.
 
-Move what you think is appropriate from `SpindexerSubsystem.java` to these new classes.
-
-<details><summary>Recommended refactoring summary</summary>
-
+Apply the following refactoring:
 - Move the motor ID `-1` to `SpindexerConst` as `MOTOR_ID`
 - Move `motorConfig` and its static block to `SpindexerConfig`
 - Move the current limit of `80.0` to a new `SpindexerConfig` constant
 - Move the `start()` motor speed of `0.5` to a new `SpindexerConfig` constant
 
-</details>
-
-Don't forget to commit.
+Don't forget to commit, with commit type `refactor: `.
 
 ##### Documentation
 The core functionality of the spindexer feature is done for now, but there are a few documentation tasks to do.
 
-First, use Javadoc comments to document methods where necessary, specifically your two motor methods. (Javadoc comments are started with `/**` (slash, star, star)).
+First, use Javadoc comments to document methods where necessary, specifically your motor methods. (Javadoc comments are started with `/**` (slash, star, star)).
 
 Fields can also be documented using a Javadoc comment placed before the declaration. Document your motor speed constant, as the operational spindexer power.
 
@@ -533,6 +554,8 @@ We have a lot of placeholder values in the code currently. For every unknown or 
 Note that these documentation tasks should typically be done *while* writing the code, not after writing it.
 
 Don't forget to commit.
+
+This marks the completion of the first subsystem.
 
 ### Commands and Bindings
 In order for the driver to utilize these methods, we have to create controller *bindings* that tie *controls* (e.g. right trigger) to *actions* (WPILib command objects). We use an Xbox controller. \
