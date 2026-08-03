@@ -27,7 +27,7 @@ public class IntakeSubsystem extends SubsystemBase {
     }
 
     private void rollersOn() {
-        moveRollerSpeed(IntakeConst.ROLLER_SPEED);
+        moveRollerSpeed(IntakeConfig.ROLLER_SPEED);
     }
 
     private void rollersOff() {
@@ -35,7 +35,7 @@ public class IntakeSubsystem extends SubsystemBase {
     }
 
     private void rollersReverse() {
-        moveRollerSpeed(-IntakeConst.ROLLER_SPEED);
+        moveRollerSpeed(IntakeConfig.REVERSE_ROLLER_SPEED);
     }
 
     private void moveAngle(Angle angle) {

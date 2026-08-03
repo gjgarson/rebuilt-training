@@ -7,6 +7,9 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 public class IntakeConfig {
+    public static final double ROLLER_SPEED = 0.5;
+    public static final double REVERSE_ROLLER_SPEED = -0.5;
+
     public static final TalonFXConfiguration deployConfig = new TalonFXConfiguration();
 
     static {

@@ -10,6 +10,4 @@ public class IntakeConst {
 
     public static final Angle MIN_ANGLE = Degrees.of(0.0);
     public static final Angle MAX_ANGLE = Degrees.of(128.26);
-
-    public static final double ROLLER_SPEED = 0.5;
 }
